@@ -1,6 +1,6 @@
 const la = require('lazy-ass')
 const is = require('check-more-types')
-const snapshot = require('snap-shot')
+const snapshot = require('snap-shot-it')
 const nock = require('nock')
 
 /* global describe, it, beforeEach */
