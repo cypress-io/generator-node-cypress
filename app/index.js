@@ -52,6 +52,14 @@ const g = Generator.extend({
     )
   },
 
+  copyEslintrc () {
+    debug('Copying .eslintrc file')
+    this.fs.copy(
+      this.templatePath('eslintrc'),
+      this.destinationPath('.eslintrc')
+    )
+  },
+
   copyIssueTemplate () {
     debug('Copying issue template')
     this.fs.copy(
