@@ -13,7 +13,7 @@
     "lint": "eslint --fix app/*.js test/*.js",
     "size": "t=\"$(npm pack .)\"; wc -c \"${t}\"; tar tvf \"${t}\"; rm \"${t}\";",
     "issues": "git-issues",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release": "semantic-action pre && npm publish && semantic-action post",
     "e2e": "./test/e2e.sh",
     "ban": "ban",
     "license": "license-checker --production --onlyunknown --csv",

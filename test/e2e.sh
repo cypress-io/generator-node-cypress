@@ -24,7 +24,7 @@ git init
 git remote add origin git@github.com:bahmutov/test-node-generator.git
 
 echo "Running yeoman, expect to read answers from file"
-DEBUG=gen yo node-bahmutov
+DEBUG=gen yo node-cypress
 rm answers.json
 echo "Generator is done"
 
@@ -41,15 +41,5 @@ git commit -m "chore(test): this is a test commit"
 ls -la
 git log --oneline
 # git show
-
-echo "Testing Dockerfile generation"
-yo node-bahmutov:docker
-echo "Git status"
-git status
-git add Dockerfile .dockerignore package.json
-git commit -m "chore(docker): generate Dockerfile"
-
-echo "Git log after adding docker files"
-git log --oneline
 
 echo "All done testing generator in $folder"

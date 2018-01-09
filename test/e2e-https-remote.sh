@@ -25,7 +25,7 @@ echo "Using HTTPS:// github remote url"
 git remote add origin https://github.com/myuser/my-repository.git
 
 echo "Running yeoman, expect to read answers from file"
-yo node-bahmutov
+yo node-cypress
 rm answers.json
 echo "Generator is done"
 
