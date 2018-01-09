@@ -1,3 +1,5 @@
 {
-  "standard.enable": false
+  "standard.enable": false,
+  "git.ignoreLimitWarning": true,
+  "prettier.eslintIntegration": true
 }

@@ -8,8 +8,8 @@
     "commit": "commit-wizard",
     "pretest": "npm run lint",
     "unit": "mocha --timeout 5000 app/*-spec.js",
-    "pretty": "prettier-standard 'app/*.js' 'test/*.js'",
-    "noprelint": "npm run pretty",
+    "pretty": "prettier-eslint --write 'app/*.js' 'test/*.js'",
+    "prelint": "npm run pretty",
     "lint": "eslint --fix app/*.js test/*.js",
     "size": "t=\"$(npm pack .)\"; wc -c \"${t}\"; tar tvf \"${t}\"; rm \"${t}\";",
     "issues": "git-issues",
@@ -84,6 +84,7 @@
     "mocha": "4.0.1",
     "nock": "9.0.25",
     "pre-git": "3.15.3",
+    "prettier-eslint-cli": "4.7.0",
     "sinon": "4.0.2"
   },
   "release": {
