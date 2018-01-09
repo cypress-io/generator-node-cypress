@@ -76,21 +76,21 @@ const g = Generator.extend({
     debug('Getting Git origin url')
     const done = this.async()
     originUrl()
-      .then(url => {
-        la(is.unemptyString(url), 'could not get github origin url')
-        debug('got remote origin url', url)
-        this.repoDomain = remoteGitUtils.getDomain(url)
-        debug('repo domain', this.repoDomain)
-        this.originUrl = remoteGitUtils.gitRemoteToHttps(url)
-        debug('git origin HTTPS url', this.originUrl)
-        done()
-      })
-      .catch(errors.onGitOriginError)
+    .then((url) => {
+      la(is.unemptyString(url), 'could not get github origin url')
+      debug('got remote origin url', url)
+      this.repoDomain = remoteGitUtils.getDomain(url)
+      debug('repo domain', this.repoDomain)
+      this.originUrl = remoteGitUtils.gitRemoteToHttps(url)
+      debug('git origin HTTPS url', this.originUrl)
+      done()
+    })
+    .catch(errors.onGitOriginError)
   },
 
   author () {
     this.answers = _.extend(this.answers, {
-      author: this.user.git.name() + ' <' + this.user.git.email() + '>'
+      author: `${this.user.git.name()} <${this.user.git.email()}>`
     })
   },
 
@@ -102,7 +102,7 @@ const g = Generator.extend({
     debug('got github username', this.githubUsername)
     console.assert(
       this.githubUsername,
-      'Could not get github username from url ' + this.originUrl
+      `Could not get github username from url ${this.originUrl}`
     )
   },
 
@@ -178,7 +178,7 @@ const g = Generator.extend({
   },
 
   _fillDefaultAnswers () {
-    return getRepoDescripton(this.originUrl).then(description => ({
+    return getRepoDescripton(this.originUrl).then((description) => ({
       description
     }))
   },
@@ -193,7 +193,7 @@ const g = Generator.extend({
       return this._readAnswersFromFile(answersFilename).then(recordAnswers)
     }
 
-    return this._fillDefaultAnswers().then(answers => {
+    return this._fillDefaultAnswers().then((answers) => {
       const questions = [
         {
           type: 'input',
@@ -302,8 +302,8 @@ const g = Generator.extend({
     // default spec file
     const name = _.kebabCase(this.answers.noScopeName)
     const specName = this.answers.typescript
-      ? name + '-spec.ts'
-      : name + '-spec.js'
+      ? `${name}-spec.ts`
+      : `${name}-spec.js`
     const specFilename = path.join('src', specName)
     const info = {
       name: this.answers.name,
@@ -365,7 +365,7 @@ const g = Generator.extend({
       clean.main = 'build/'
     }
 
-    const str = JSON.stringify(clean, null, 2) + '\n'
+    const str = `${JSON.stringify(clean, null, 2)}\n`
     fs.writeFileSync(packageFilename, str, 'utf8')
   },
 
@@ -416,7 +416,7 @@ const g = Generator.extend({
       debug('linting typescript')
       const done = this.async()
       const child = this.spawnCommand('npm', ['run', 'lint'])
-      child.on('close', exitCode => {
+      child.on('close', (exitCode) => {
         if (exitCode) {
           const msg = 'Could not lint TypeScript code'
           console.error(msg)
@@ -434,7 +434,7 @@ const g = Generator.extend({
       debug('building from typescript')
       const done = this.async()
       const child = this.spawnCommand('npm', ['run', 'build'])
-      child.on('close', exitCode => {
+      child.on('close', (exitCode) => {
         if (exitCode) {
           const msg = 'Could not build from TypeScript code'
           console.error(msg)

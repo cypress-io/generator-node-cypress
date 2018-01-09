@@ -3,13 +3,13 @@
 const micro = require('micro')
 const freeport = require('freeport-promise')
 freeport()
-  .then(port => {
-    const server = micro(function (req, res) {
-      console.log(req.url)
-      res.writeHead(200)
-      res.end('Hello world\n\n')
-    })
-    server.listen(port)
-    console.log('server listening at port', port)
+.then((port) => {
+  const server = micro(function (req, res) {
+    console.log(req.url)
+    res.writeHead(200)
+    res.end('Hello world\n\n')
   })
-  .catch(console.error)
+  server.listen(port)
+  console.log('server listening at port', port)
+})
+.catch(console.error)

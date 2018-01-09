@@ -11,8 +11,8 @@ function formHttpsGitlabUrl (domain, user, repo) {
   return `https://${domain}/${user}/${repo}.git`
 }
 
-const isGithub = url => url.includes('github')
-const isGitlab = url => url.includes('gitlab')
+const isGithub = (url) => url.includes('github')
+const isGitlab = (url) => url.includes('gitlab')
 
 function isGitAt (url) {
   return url.startsWith('git@')

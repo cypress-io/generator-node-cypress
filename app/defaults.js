@@ -15,7 +15,7 @@ const defaults = {
     'unused-deps': 'dependency-check --unused --no-dev .',
     issues: 'git-issues',
     license: 'license-checker --production --onlyunknown --csv',
-    pretty: "prettier-standard 'src/*.js'",
+    pretty: 'prettier-standard \'src/*.js\'',
     prelint: 'npm run pretty',
     lint: 'standard --verbose --fix src/*.js',
     pretest: 'npm run lint',

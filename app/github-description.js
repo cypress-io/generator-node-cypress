@@ -36,17 +36,17 @@ function repoDescription (url) {
   debug('fetching description using', apiUrl)
 
   return got(apiUrl, { json: true })
-    .then(response => response.body)
-    .then(info => info.description)
-    .then(
-      tap(description => {
-        debug('repo description "%s"', description)
-      })
-    )
-    .catch(err => {
-      debug('could not fetch repo description using', apiUrl)
-      debug(err)
+  .then((response) => response.body)
+  .then((info) => info.description)
+  .then(
+    tap((description) => {
+      debug('repo description "%s"', description)
     })
+  )
+  .catch((err) => {
+    debug('could not fetch repo description using', apiUrl)
+    debug(err)
+  })
 }
 
 module.exports = repoDescription

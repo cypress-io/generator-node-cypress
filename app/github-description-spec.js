@@ -16,8 +16,8 @@ describe('github repo description', () => {
       'Test project for testing https://github.com/bahmutov/generator-node-bahmutov'
 
     nock('https://api.github.com')
-      .get('/repos/bahmutov/test-node-generator')
-      .reply(200, { description })
+    .get('/repos/bahmutov/test-node-generator')
+    .reply(200, { description })
 
     const url = 'git@github.com:bahmutov/test-node-generator.git'
     return snapshot(repoDescription(url))
@@ -28,8 +28,8 @@ describe('github repo description', () => {
       'Test project for testing https://github.com/bahmutov/generator-node-bahmutov'
 
     nock('https://api.github.com')
-      .get('/repos/bahmutov/test-node-generator')
-      .reply(200, { description })
+    .get('/repos/bahmutov/test-node-generator')
+    .reply(200, { description })
 
     const url = 'https://github.com/bahmutov/test-node-generator.git'
     return snapshot(repoDescription(url))
@@ -37,11 +37,11 @@ describe('github repo description', () => {
 
   it('resolves with undefined if there is an error', () => {
     nock('https://api.github.com')
-      .get('/repos/no-such-user/does-not-exist')
-      .reply(404)
+    .get('/repos/no-such-user/does-not-exist')
+    .reply(404)
 
     const url = 'git@github.com:no-such-user/does-not-exist.git'
-    return repoDescription(url).then(description => {
+    return repoDescription(url).then((description) => {
       la(description === undefined)
     })
   })
@@ -51,13 +51,13 @@ describe('github repo description', () => {
 
     beforeEach(() => {
       nock('https://api.github.com')
-        .get('/repos/no-such-user/does-not-exist')
-        .reply(200, { description })
+      .get('/repos/no-such-user/does-not-exist')
+      .reply(200, { description })
     })
 
     it('can mock non-existent repo', () => {
       const url = 'git@github.com:no-such-user/does-not-exist.git'
-      return repoDescription(url).then(text => {
+      return repoDescription(url).then((text) => {
         la(description === text, 'wrong description returned', text)
       })
     })
