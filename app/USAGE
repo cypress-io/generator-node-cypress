@@ -1,0 +1,12 @@
+Description:
+    Initializes an NPM module with all good defaults and tools
+
+Example
+    Create a new folder, for example "foo" and run "git init"
+    Create a GitHub repo, for example "username/foo"
+    Set remote origin to point at the GitHub repo
+    Run `yo node-cypress`
+
+Sit back and enjoy.
+
+See https://github.com/cypress-io/generator-node-cypress for more details
