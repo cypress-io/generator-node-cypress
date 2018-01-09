@@ -16,9 +16,9 @@ const defaults = {
     'unused-deps': 'dependency-check --unused --no-dev .',
     issues: 'git-issues',
     license: 'license-checker --production --onlyunknown --csv',
-    pretty: 'prettier-standard \'src/*.js\'',
+    pretty: 'prettier-eslint --write \'src/*.js\'',
     prelint: 'npm run pretty',
-    lint: 'standard --verbose --fix src/*.js',
+    lint: 'eslint --fix src/*.js',
     pretest: 'npm run lint',
     secure: 'nsp check',
     /* eslint-disable */

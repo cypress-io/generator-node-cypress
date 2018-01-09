@@ -1,5 +1,6 @@
 {
   "standard.enable": false,
   "git.ignoreLimitWarning": true,
-  "prettier.eslintIntegration": true
+  "prettier.eslintIntegration": true,
+  "editor.formatOnSave": true
 }

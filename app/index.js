@@ -134,39 +134,6 @@ const g = Generator.extend({
     debug('- name', this.answers.name)
     debug('- description', this.answers.description)
     debug('- keywords', this.answers.keywords)
-    debug('- typescript', this.answers.typescript)
-    debug('- immutable', this.answers.immutable)
-
-    la(
-      is.bool(this.answers.typescript),
-      'expected boolean typescript',
-      this.answers.typescript
-    )
-    la(
-      is.bool(this.answers.immutable),
-      'expected boolean immutable',
-      this.answers.immutable
-    )
-    if (this.answers.typescript) {
-      console.log('⚠️ Cannot lint TypeScript with immutable yet')
-      this.answers.immutable = false
-    }
-
-    if (this.answers.immutable) {
-      this.answers.scripts.postlint = 'eslint --fix src/*.js'
-      this.answers.eslintConfig = {
-        env: {
-          es6: true
-        },
-        plugins: ['immutable'],
-        rules: {
-          'no-var': 2,
-          'immutable/no-let': 2,
-          'immutable/no-this': 2,
-          'immutable/no-mutation': 2
-        }
-      }
-    }
   },
 
   _readAnswersFromFile (filename) {
@@ -213,20 +180,6 @@ const g = Generator.extend({
           type: 'input',
           name: 'keywords',
           message: 'Comma separated keywords',
-          store: false
-        },
-        {
-          type: 'confirm',
-          name: 'typescript',
-          message: 'Do you want to use TypeScript? (alpha)',
-          default: false,
-          store: false
-        },
-        {
-          type: 'confirm',
-          name: 'immutable',
-          message: 'Do you want to prevent data mutations? (alpha)',
-          default: false,
           store: false
         }
       ]
@@ -292,23 +245,16 @@ const g = Generator.extend({
     debug('copying source files')
 
     // entry file
-    const index = this.answers.typescript ? 'src/index.ts' : 'src/index.js'
-    this.fs.copyTpl(
-      this.templatePath('index.js'),
-      this.destinationPath(index),
-      _.pick(this.answers, ['typescript', 'immutable'])
-    )
+    const index = 'src/index.js'
+    this.fs.copyTpl(this.templatePath('index.js'), this.destinationPath(index))
 
     // default spec file
     const name = _.kebabCase(this.answers.noScopeName)
-    const specName = this.answers.typescript
-      ? `${name}-spec.ts`
-      : `${name}-spec.js`
+    const specName = `${name}-spec.js`
     const specFilename = path.join('src', specName)
     const info = {
       name: this.answers.name,
-      nameVar: _.camelCase(this.answers.noScopeName),
-      typescript: this.answers.typescript
+      nameVar: _.camelCase(this.answers.noScopeName)
     }
     this.fs.copyTpl(
       this.templatePath('spec.js'),
@@ -318,24 +264,6 @@ const g = Generator.extend({
     debug('copied index and spec files')
   },
 
-  copyTypeScriptFiles () {
-    if (!this.answers.typescript) {
-      debug('skipping TypeScript files')
-      return
-    }
-
-    this.fs.copy(
-      this.templatePath('tsconfig.json'),
-      this.destinationPath('tsconfig.json')
-    )
-
-    this.fs.copy(
-      this.templatePath('tslint.json'),
-      this.destinationPath('tslint.json')
-    )
-    debug('copied TypeScript config files')
-  },
-
   report () {
     debug('all values')
     debug(JSON.stringify(this.answers, null, 2))
@@ -343,27 +271,7 @@ const g = Generator.extend({
 
   writePackage () {
     debug('writing package.json file')
-    const clean = _.omit(this.answers, [
-      'noScopeName',
-      'repoDomain',
-      'typescript',
-      'immutable'
-    ])
-
-    if (this.answers.typescript) {
-      debug('setting TypeScript build step')
-      clean.scripts.build = 'tsc'
-      clean.scripts.pretest = 'npm run build'
-      clean.scripts.lint = 'tslint --fix --format stylish src/**/*.ts'
-      clean.scripts.unit = 'mocha build/*-spec.js'
-      clean.files = [
-        'src/*.ts',
-        'build/*.js',
-        '!src/*-spec.ts',
-        '!build/*-spec.js'
-      ]
-      clean.main = 'build/'
-    }
+    const clean = _.omit(this.answers, ['noScopeName', 'repoDomain'])
 
     const str = `${JSON.stringify(clean, null, 2)}\n`
     fs.writeFileSync(packageFilename, str, 'utf8')
@@ -376,31 +284,23 @@ const g = Generator.extend({
 
   install () {
     debug('installing dependencies')
+    // dev dependencies to install in the created project
     const devDependencies = [
       'ban-sensitive-files',
       'dependency-check',
       'deps-ok',
+      'eslint',
+      'eslint-plugin-cypress-dev',
+      'eslint-plugin-mocha',
+      'github-post-release',
+      'prettier-eslint-cli',
+      'semantic-action',
       'git-issues',
       'license-checker',
       'mocha',
       'nsp',
-      'pre-git',
-      'prettier-standard'
+      'pre-git'
     ]
-    if (this.answers.immutable) {
-      devDependencies.push('eslint', 'eslint-plugin-immutable')
-    }
-    if (this.answers.typescript) {
-      devDependencies.push(
-        'tslint',
-        'tslint-config-standard',
-        'typescript',
-        '@types/mocha'
-      )
-    } else {
-      // linting JavaScript
-      devDependencies.push('standard')
-    }
     const installOptions = {
       saveDev: true,
       depth: 0
@@ -409,62 +309,9 @@ const g = Generator.extend({
   },
 
   end: {
-    lintTypeScript () {
-      if (!this.answers.typescript) {
-        return
-      }
-      debug('linting typescript')
-      const done = this.async()
-      const child = this.spawnCommand('npm', ['run', 'lint'])
-      child.on('close', (exitCode) => {
-        if (exitCode) {
-          const msg = 'Could not lint TypeScript code'
-          console.error(msg)
-          console.error('exit code', exitCode)
-          return done(new Error(msg))
-        }
-        done()
-      })
-    },
-
-    endAndBuildTypeScript () {
-      if (!this.answers.typescript) {
-        return
-      }
-      debug('building from typescript')
-      const done = this.async()
-      const child = this.spawnCommand('npm', ['run', 'build'])
-      child.on('close', (exitCode) => {
-        if (exitCode) {
-          const msg = 'Could not build from TypeScript code'
-          console.error(msg)
-          console.error('exit code', exitCode)
-          return done(new Error(msg))
-        }
-        done()
-      })
-    },
-
     printSemanticReleaseAdvice () {
-      console.log('Solid Node project has been setup for you 🎉🎉🎉')
-
-      if (this.answers.typescript) {
-        console.log('TypeScript source code in src/ folder')
-        console.log('run "npm run build" to build JS code')
-        console.log('generated JavaScript code in build/ folder')
-      }
-
-      if (remoteGitUtils.isGithub(this.originUrl)) {
-        console.log('Please consider using semantic release to publish to NPM')
-        console.log('  npm i -g semantic-release-cli')
-        console.log('and then run this generator again')
-        console.log('  yo node-bahmutov:release')
-      } else if (remoteGitUtils.isGitlab(this.originUrl)) {
-        console.log('Please consider using semantic release to publish to NPM')
-        console.log(
-          'See https://gitlab.com/hyper-expanse/semantic-release-gitlab'
-        )
-      }
+      console.log('Cypress.io team salutes you 🎉🎉🎉')
+      console.log('You got yourself a solid Node project')
     }
   }
 })
