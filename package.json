@@ -91,7 +91,14 @@
     "snap-shot-it": "5.0.1"
   },
   "release": {
-    "generateNotes": "github-post-release",
-    "analyzeCommits": "simple-commit-message"
+    "analyzeCommits": {
+      "preset": "angular",
+      "releaseRules": [
+        {
+          "type": "break",
+          "release": "major"
+        }
+      ]
+    }
   }
 }
