@@ -142,6 +142,7 @@ const g = Generator.extend({
     debug('- name', this.answers.name)
     debug('- description', this.answers.description)
     debug('- keywords', this.answers.keywords)
+    debug('- renovateApp', this.answers.renovateApp)
   },
 
   _readAnswersFromFile (filename) {
@@ -189,6 +190,13 @@ const g = Generator.extend({
           name: 'keywords',
           message: 'Comma separated keywords',
           store: false
+        },
+        {
+          type: 'confirm',
+          name: 'renovateApp',
+          message: 'Do you want to use RenovateApp?',
+          default: true,
+          store: false
         }
       ]
       return this.prompt(questions).then(recordAnswers)
@@ -229,6 +237,18 @@ const g = Generator.extend({
       this.answers.bugs
     )
     debug('bugs url is', this.answers.bugs)
+  },
+
+  copyRenovateConfig () {
+    if (!this.answers.renovateApp) {
+      debug('no need to set up renovate')
+      return
+    }
+    debug('copying renovate config')
+    this.fs.copyTpl(
+      this.templatePath('renovate.json'),
+      this.destinationPath('renovate.json')
+    )
   },
 
   copyReadme () {
@@ -279,7 +299,11 @@ const g = Generator.extend({
 
   writePackage () {
     debug('writing package.json file')
-    const clean = _.omit(this.answers, ['noScopeName', 'repoDomain'])
+    const clean = _.omit(this.answers, [
+      'noScopeName',
+      'repoDomain',
+      'renovateApp'
+    ])
 
     const str = `${JSON.stringify(clean, null, 2)}\n`
     fs.writeFileSync(packageFilename, str, 'utf8')
