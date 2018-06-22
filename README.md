@@ -6,6 +6,7 @@
 
 [![Build status][generator-node-cypress-ci-image] ][generator-node-cypress-ci-url]
 [![semantic-release][semantic-image] ][semantic-url]
+[![renovate-app badge][renovate-badge]][renovate-app]
 
 ## Install and use
 
@@ -21,26 +22,26 @@ Answer a few questions and you should be all set.
 
 ## Features
 
-* Targeted at public GitHub repos
-* Default `.npmrc` and `.gitignore` files
-* Git hooks and message validation using [pre-git](https://github.com/bahmutov/pre-git)
-* Linting and auto formatting using [eslint](https://eslint.org/) and
+- Targeted at public GitHub repos
+- Default `.npmrc` and `.gitignore` files
+- Git hooks and message validation using [pre-git](https://github.com/bahmutov/pre-git)
+- Linting and auto formatting using [eslint](https://eslint.org/) and
   [prettier-eslint](https://github.com/prettier/prettier-eslint-cli) using `npm run lint`
-* Showing open Git issues via
+- Showing open Git issues via
   [git-issues](https://github.com/softwarescales/git-issues) using `npm run issues`
-* Unit testing with [Mocha](http://mochajs.org/) using `npm run unit`
-* Packaged [size reporting on pre-push hook][size] using `npm run size`
-* Running [Node Security Project](https://github.com/nodesecurity/nsp) check on `pre-push`
-* Checking if you are trying to commit
+- Unit testing with [Mocha](http://mochajs.org/) using `npm run unit`
+- Packaged [size reporting on pre-push hook][size] using `npm run size`
+- Running [Node Security Project](https://github.com/nodesecurity/nsp) check on `pre-push`
+- Checking if you are trying to commit
   [sensitive files](https://github.com/bahmutov/ban-sensitive-files)
   using `npm run ban`
-* License check of production dependencies with
+- License check of production dependencies with
   [license-checker](https://www.npmjs.com/package/license-checker) using `npm run license`
-* Outdated, missing local and unused dependencies check with
+- Outdated, missing local and unused dependencies check with
   [deps-ok](https://github.com/bahmutov/deps-ok) and
   [dependency-check](https://www.npmjs.com/package/dependency-check)
   using `npm run deps` and `npm run unused-deps`
-* Semantic release setup using [semantic-action](https://github.com/bahmutov/semantic-action)
+- Semantic release setup using [semantic-action](https://github.com/bahmutov/semantic-action)
 
 See `npm run` output for the full list of scripts.
 
@@ -66,8 +67,8 @@ it first and then set it before running generator
 
 Author: Gleb Bahmutov Cypress.io &copy; 2018
 
-* [@bahmutov](https://twitter.com/bahmutov)
-* [cypress.io](https://www.cypress.io)
+- [@bahmutov](https://twitter.com/bahmutov)
+- [cypress.io](https://www.cypress.io)
 
 License: MIT - do anything with the code, but don't blame me if it does not work.
 
@@ -107,3 +108,5 @@ OTHER DEALINGS IN THE SOFTWARE.
 [generator-node-cypress-ci-url]: https://travis-ci.org/cypress-io/generator-node-cypress
 [semantic-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-url]: https://github.com/semantic-release/semantic-release
+[renovate-badge]: https://img.shields.io/badge/renovate-app-blue.svg
+[renovate-app]: https://renovateapp.com/
