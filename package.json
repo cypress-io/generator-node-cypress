@@ -99,6 +99,7 @@
           "release": "major"
         }
       ]
-    }
+    },
+    "generateNotes": "github-post-release"
   }
 }
