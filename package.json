@@ -87,7 +87,7 @@
     "pre-git": "3.17.1",
     "prettier-eslint-cli": "4.7.1",
     "semantic-action": "1.1.6",
-    "sinon": "4.0.2",
+    "sinon": "4.5.0",
     "snap-shot-it": "5.0.1"
   },
   "release": {
