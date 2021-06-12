@@ -74,7 +74,7 @@
   },
   "devDependencies": {
     "ban-sensitive-files": "1.9.15",
-    "dependency-check": "2.10.1",
+    "dependency-check": "4.1.0",
     "deps-ok": "1.4.1",
     "eslint": "4.19.1",
     "eslint-plugin-cypress-dev": "1.1.2",
